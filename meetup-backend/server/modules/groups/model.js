@@ -21,18 +21,24 @@ import mongoose, { Schema } from 'mongoose';
    }]
  }, { timestamps: true });
 
+
+ //Create a meetup and add it to the meetup array in the group
  GroupSchema.statics.addMeetup = async function (id, args) {
    const Meetup = mongoose.model('Meetup');
+  //add the group id to the meetup group element
+  //this is author the meetup
+   const meetup = await new Meetup({ ...args, group: id });
 
-   const group = await this.findById(id);
+   //find the group with the id in url
+   //and push the meetup id in the meetup element
+   const group = await this.findByIdAndUpdate(id, { $push: {
+     meetups: meetup.id
+   }});
 
-   const meetup = await new Meetup({ ...args, group });
-
-   group.meetups.push(meetup);
-
-   const result = await Promise.all([meetup.save(), group.save()]);
-
-   return result;
+   return {
+     meetup: await meetup.save(),
+     group
+   }
  };
 
  export default mongoose.model('Group', GroupSchema);
