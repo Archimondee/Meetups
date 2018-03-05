@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Colors from './src/constants/colors';
-import {HomeScreen} from './src/screen/';
+import { HomeScreen } from './src/screen/';
 
 EStyleSheet.build(Colors);
 
